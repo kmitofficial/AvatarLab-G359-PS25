@@ -11,11 +11,11 @@ Our project is about **developing an AI Avatar** that can produce **realistic ta
 
 ## ???? Architecture Diagram  
 ![Architecture Diagram](images/Architecture.png)  
-*(Replace `path-to-architecture-diagram.png` with the actual image path in your repository.)*  
+  
 
 ## ???? Workflow Diagram  
 ![Workflow Diagram](images/FlowChart.png)  
-*(Replace `path-to-workflow-diagram.png` with the actual image path in your repository.)*  
+
 
 ### Workflow Explanation
 #### **Input:**
