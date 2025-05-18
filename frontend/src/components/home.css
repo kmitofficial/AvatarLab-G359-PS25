@@ -1,0 +1,51 @@
+.avatar-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    /* Three columns by default */
+    gap: 20px;
+}
+
+.avatar-item {
+    background-color: #1A1833;
+    border-radius: 10px;
+    padding: 20px;
+    border: 1px solid #4B3F7D;
+    text-align: center;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.avatar-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+/* Ensuring Image 4 goes in between 1 and 2 */
+.avatar-item:nth-child(4) {
+    grid-column: span 2;
+    /* Image 4 spans across 2 columns */
+}
+
+/* Ensuring Image 5 goes in between 2 and 3 */
+.avatar-item:nth-child(5) {
+    grid-column: span 2;
+    /* Image 5 spans across 2 columns */
+}
+
+/* Mobile adjustments: 2 columns on mobile */
+@media (max-width: 768px) {
+    .avatar-grid {
+        grid-template-columns: repeat(2, 1fr);
+        /* Two columns on mobile */
+    }
+
+    .avatar-item:nth-child(4),
+    .avatar-item:nth-child(5) {
+        grid-column: span 2;
+        /* Both 4 and 5 span across both columns */
+    }
+}

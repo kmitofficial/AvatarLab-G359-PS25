@@ -1,0 +1,285 @@
+:root {
+    --primary: #7d5fff;
+    --secondary: #ff6fd8;
+    --text-main: #ffffff;
+    --text-subtle: #cccccc;
+    --background: #0f0e2c;
+    --glass-bg: rgba(255, 255, 255, 0.05);
+    --border-glow: rgba(255, 255, 255, 0.1);
+}
+
+body {
+    background-color: var(--background);
+    color: var(--text-main);
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Container setup */
+.card-container {
+    display: flex;
+    justify-content: center;
+    padding: 3rem 2rem;
+    background: var(--background);
+    min-height: 100vh;
+}
+
+.card {
+    background: var(--glass-bg);
+    border-radius: 2rem;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--border-glow);
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.4);
+    display: flex;
+    gap: 3rem;
+    padding: 2.5rem;
+    max-width: 1200px;
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+/* Left Side - Form */
+.form-side {
+    flex: 1;
+    min-width: 320px;
+}
+
+.page-title {
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+    font-weight: 600;
+}
+
+.script-label-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+}
+
+.text-area-label {
+    font-weight: 500;
+    color: var(--text-main);
+}
+
+.char-count {
+    color: var(--text-subtle);
+    font-size: 0.9rem;
+}
+
+.script-input,
+.audio-select {
+    width: 100%;
+    min-height: 150px;
+    background: transparent;
+    border: 1px solid var(--border-glow);
+    border-radius: 1rem;
+    padding: 1rem;
+    color: var(--text-main);
+    resize: vertical;
+    font-size: 1rem;
+}
+
+.audio-select {
+    min-height: unset;
+}
+
+textarea::placeholder {
+    color: var(--text-subtle);
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.or-text {
+    text-align: center;
+    margin: 1rem 0;
+    font-weight: 500;
+}
+
+.note-text {
+    font-size: 0.9rem;
+    color: var(--text-subtle);
+    margin-bottom: 1rem;
+}
+
+/* Upload box */
+.upload-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 2px dashed var(--border-glow);
+    padding: 2rem;
+    border-radius: 1rem;
+    cursor: pointer;
+    transition: border-color 0.3s ease;
+}
+
+.upload-box:hover {
+    border-color: var(--primary);
+}
+
+.icon-img {
+    width: 40px;
+    margin-bottom: 1rem;
+}
+
+.upload-text {
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+}
+
+.upload-subtext {
+    font-size: 0.85rem;
+    color: var(--text-subtle);
+}
+
+/* Right Side - Avatar */
+.avatar-side {
+    flex: 1;
+    min-width: 320px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.avatar-selected-text {
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+}
+
+.avatar-preview-box {
+    width: 400px;
+    height: auto;
+    border-radius: 1rem;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 0 20px rgba(125, 95, 255, 0.3);
+}
+
+.avatar-image-wrapper {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.avatar-image {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 1rem;
+}
+
+.play-icon {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background-color: rgba(125, 95, 255, 0.7);
+    padding: 0.4rem;
+    border-radius: 50%;
+}
+
+/* Button area */
+.button-wrapper {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: center;
+}
+
+.generate-button,
+.next-button {
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    border: none;
+    padding: 0.75rem 2rem;
+    border-radius: 2rem;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.generate-button:hover,
+.next-button:hover {
+    transform: scale(1.05);
+}
+
+.next-fixed-button {
+    position: fixed;
+    bottom: 6rem;
+    left: 3rem;
+    background: linear-gradient(90deg, var(--secondary), var(--primary));
+    border: none;
+    padding: 0.75rem 2rem;
+    border-radius: 2rem;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    z-index: 1000;
+}
+
+.back-bottom-left-button {
+    position: fixed;
+    bottom: 5rem;
+    left: 3rem;
+    background: linear-gradient(90deg, var(--secondary), var(--primary));
+    border: none;
+    padding: 0.75rem 2rem;
+    border-radius: 2rem;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    z-index: 1000;
+
+}
+
+.back-bottom-left-button:hover {
+    transform: scale(1.05);
+}
+
+/*  */
+/* Styling the select dropdown */
+.audio-select {
+    width: 100%;
+    padding: 0.75rem;
+    background: var(--glass-bg);
+    /* Make it consistent with the overall design */
+    border: 1px solid var(--border-glow);
+    border-radius: 1rem;
+    color: var(--text-main);
+    font-size: 1rem;
+    appearance: none;
+    /* Remove default dropdown arrow */
+    cursor: pointer;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Focus effect for the dropdown */
+.audio-select:focus {
+    outline: none;
+    border-color: var(--primary);
+    background-color: rgba(125, 95, 255, 0.1);
+    /* Light background when focused */
+}
+
+/* Option styling */
+.audio-select option {
+    background: var(--background);
+    /* Background for dropdown options */
+    color: var(--text-main);
+    /* Text color */
+    padding: 0.5rem;
+}
+
+/* Hover effect for options */
+.audio-select option:hover {
+    background-color: var(--primary);
+    color: white;
+}
