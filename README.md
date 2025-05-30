@@ -9,12 +9,12 @@ Our project is about **developing an AI Avatar** that can produce **realistic ta
 - **Assistive technology** for people with speech impairments.  
 - **Enhanced video conferencing** with animated facial expressions.  
 
-## ???? Architecture Diagram  
+## Architecture Diagram  
 ![Architecture Diagram](images/Architecture.png)  
   
 
-## ???? Workflow Diagram  
-![Workflow Diagram](images/FlowChart.png)  
+## Workflow Diagram  
+<img src="images/FlowChart.png" alt="Project Workflow" height="400"/>
 
 
 ### Workflow Explanation
@@ -29,7 +29,7 @@ Our project is about **developing an AI Avatar** that can produce **realistic ta
 - **Conditional Diffusion Process:** A Gaussian noise is progressively denoised by the denoising network (M), conditioned on encoded audio features.
 - **Decoding:** The denoised latent representation is decoded back to pixel space to produce the final animated face.
 
-## ???? Brief Explanation of the Reference Research Papers
+##  Brief Explanation of the Reference Research Papers
 
 ### **1. Small-E: Small Language Model with Linear Attention for Efficient Speech Synthesis**
 Conventional **text-to-speech (TTS) models** suffer from **high computational costs** and **alignment problems** (word skipping & repetition). **Small-E** overcomes these by:
@@ -74,6 +74,6 @@ Current **talking head animation models** face quality vs. generalization trade-
 | **Key Strength** | Performs well on budget hardware | Creates top-notch lip-sync animations |
 | **Key Weakness** | few SOTA comparisons available | Requires fine-tuning for pathological cases |
 
-Both papers present **scalable and efficient AI-based speech & animation tech**, so they are well-suited for **virtual avatars, dubbing, and real-time use**. ????
+Both papers present **scalable and efficient AI-based speech & animation tech**, so they are well-suited for **virtual avatars, dubbing, and real-time use**. 
 
 ---
