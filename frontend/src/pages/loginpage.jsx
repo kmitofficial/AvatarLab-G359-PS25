@@ -3,6 +3,7 @@ import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import { FaGoogle, FaEye, FaEyeSlash } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useAuth } from '../context/authcontext';
 
 export default function LoginPage() {
     const [email, setEmail] = useState('');
@@ -11,6 +12,7 @@ export default function LoginPage() {
     const [emailError, setEmailError] = useState('');
 
     const navigate = useNavigate();
+    const { login } = useAuth();
 
     const validateEmail = (email) => {
         const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -33,6 +35,7 @@ export default function LoginPage() {
 
             const { token, username, _id } = response.data;
             localStorage.setItem("userInfo", JSON.stringify(response.data)); // Save token/user info
+            login(response.data);
             console.log("Login successful:", username);
             navigate("/"); // Navigate after successful login
         } catch (error) {
@@ -51,6 +54,7 @@ export default function LoginPage() {
 
             const { token, username, _id } = response.data;
             localStorage.setItem("userInfo", JSON.stringify(response.data)); // Save token/user info
+            login(response.data);
             console.log("Google Login successful:", username);
             navigate("/"); // Navigate after successful Google login
         } catch (error) {
