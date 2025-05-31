@@ -103,7 +103,7 @@ router.post("/sendapi", protect, upload.single('audio_data'), async (req, res) =
         console.log("Sending data to FastAPI:", { script, avatar_id, audio_type, dynamicAudioPath, dynamicImagePath });
 
         // Call FastAPI and expect a binary arraybuffer response (the video file)
-        const response = await axios.post("http://127.0.0.1:8003/process/", form, { // Make sure this ngrok URL is up-to-date
+        const response = await axios.post("http://127.0.0.1:8003/process/", form, {
             headers: {
                 ...form.getHeaders(),
                 // 'Authorization': `Bearer ${req.user.token}`, // FastAPI does not use this Authorization
