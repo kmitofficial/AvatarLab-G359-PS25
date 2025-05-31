@@ -1,79 +1,172 @@
 # AvatarLab
 
 ### Project Purpose
-Our project is about **developing an AI Avatar** that can produce **realistic talking head animations**. Through the use of **diffusion models**, we generate expressive and temporally coherent facial expressions in sync with speech. This technology can be used to create lifelike digital avatars for many applications.
+AvatarLab is an AI-based system designed to generate **realistic talking head videos** by combining cutting-edge **voice cloning** and **lip-sync facial animation** technologies. The system enables users to create lifelike AI avatars that speak with natural expressions synced to their voice or any input text.
 
 ### Project Applications
-- **Virtual Avatars** for gaming, metaverse, and social media.
-- **AI-powered dubbing** for movies and videos.  
-- **Assistive technology** for people with speech impairments.  
-- **Enhanced video conferencing** with animated facial expressions.  
+- **Virtual avatars** for games, social media, and the metaverse  
+- **AI dubbing** for videos and films  
+- **Assistive tech** for people with speech impairments  
+- **Animated spokespersons** for education, marketing, or news  
+- **Enhanced virtual meetings** with expressive digital characters  
+
+---
 
 ## Architecture Diagram  
-![Architecture Diagram](images/Architecture.png)  
-  
+![Architecture Diagram](images/Architecture.jpeg)  
 
 ## Workflow Diagram  
 <img src="images/FlowChart.png" alt="Project Workflow" height="400"/>
 
+---
 
 ### Workflow Explanation
-#### **Input:**
-- **Audio:** A stream of audio frames containing speech.
-- **Reference Face Image (Xr):** A single face image of the target for identity establishment.
-- **Masked Ground-Truth Image (Xm):** The real video frame with the mouth area masked out to supply head pose information.
+
+#### **Inputs:**
+- **Text Input:** User-provided text to be spoken.
+- **Reference Audio (optional):** A sample of the speaker's voice to clone.
+- **Avatar Image:** A single frontal face image of the target character.
 
 #### **Processing:**
-- **Audio Encoding:** Extracts smooth audio features.
-- **Image Encoding:** The ground-truth face image (Xr) and masked ground-truth image (Xm) are encoded into latent space.
-- **Conditional Diffusion Process:** A Gaussian noise is progressively denoised by the denoising network (M), conditioned on encoded audio features.
-- **Decoding:** The denoised latent representation is decoded back to pixel space to produce the final animated face.
+- **Voice Generation (XTTS by Coqui):**
+  - Converts text into natural speech using Coqui's **XTTS** model.
+  - Can clone voice using a short sample and supports multilingual speech synthesis.
 
-##  Brief Explanation of the Reference Research Papers
+- **Video Generation (SadTalker):**
+  - Takes the generated speech and avatar image as input.
+  - Produces a **realistic talking head video** with accurate lip-sync and facial expressions.
 
-### **1. Small-E: Small Language Model with Linear Attention for Efficient Speech Synthesis**
-Conventional **text-to-speech (TTS) models** suffer from **high computational costs** and **alignment problems** (word skipping & repetition). **Small-E** overcomes these by:
-- Employing **Linear Causal Language Model (LCLM) Blocks** in place of transformers, thus being **62% more efficient**.
-- Presenting **Position-Aware Cross-Attention (PACA)** to address skipping and repetition problems.  
-- Making use of **Conditional Codec Language Modeling (CCLM)** for enhanced speech token prediction.
+#### **Outputs:**
+- **Final AI Avatar Video:** A short talking head clip with synchronized speech and expressions.
+
+---
+
+## Technology Stack
+
+| Component           | Model Used              |
+|--------------------|-------------------------|
+| Text-to-Speech     | **XTTS v2 (Coqui TTS)** |
+| Video Generation   | **SadTalker**           |
+| Frontend           | React.js                |
+| Backend API        | Node.js + Express       |
+| AI Orchestration   | Python + Flask          |
+| Database           | MongoDB (Atlas)         |
+
+---
+
+## Reference Models & Research
+
+### 1. **XTTS v2 (Coqui TTS) – Voice Cloning**
+- An advanced multilingual, zero-shot **text-to-speech** model.
+- Supports **voice cloning** from short audio samples.
+- Produces natural speech with high clarity and prosody control.
+  
+✅ **Strengths:**  
+- Supports multiple languages and speakers.  
+- No fine-tuning required for new voices.  
+- Open-source and easy to deploy.
+
+❌ **Limitations:**  
+- Might need preprocessing for noisy audio.  
+- Larger models require moderate compute resources.
+
+---
+
+### 2. **SadTalker – Talking Head Video Generation**
+- A **lip-sync-driven video synthesis model** for generating expressive face animations.
+- Works from a single reference image and audio file.
+- Combines facial motion retargeting, landmark-based head control, and audio-guided expression mapping.
 
 ✅ **Strengths:**  
-- Cost-effective and **low-resource friendly** TTS model.  
-- **Improved speech alignment** without retraining on new voices.
+- Produces realistic facial movements with good lip-sync.  
+- Requires only a single image and audio input.  
+- Open-source and GPU-friendly.
 
-❌ **Weaknesses & Future Research:**  
-- Restricted **comparisons with state-of-the-art (SOTA) models** based on availability.
-- Requires optimization for **multilingual speech synthesis**.
-
----
-
-### **2. DiffTalk: Designing Diffusion Models for Generalized Audio-Driven Portrait Animation**
-Current **talking head animation models** face quality vs. generalization trade-offs. **DiffTalk** addresses this by:
-- Applying a **Latent Diffusion Model (LDM)** to produce high-quality facial animations.
-- Utilizing **multi-modal conditioning** (Audio, Reference Image, Facial Landmarks) for **natural lip-sync and expressions**.
-- Operating in a **compressed latent space**, facilitating **efficient and high-resolution animation**.
-
-✅ **Key Strengths:**
-- **Improved generalization** to other identities without the need for retraining.
-- **Improved quality over GAN-based models** without compromising on stability.
-
-❌ **Limitations & Future Work:**
-- Remain **computationally expensive** relative to more straightforward GAN-based approaches.
-- May require **fine-tuning for extreme facial variations**.
-
---- 
-
-### **Final Takeaways:**
-
-| Feature         | **Small-E (TTS)** | **DiffTalk (Talking Head Animation)** |
-|----------------|------------------|--------------------------------------|
-| **Key Focus**  | Efficient text-to-speech (TTS) | High-quality talking head generation |
-| **Core Tech**  | Linear Attention (LCLM) + PACA | Latent Diffusion Models (LDM) |
-| **Efficiency** | 62% faster training | High-resolution with low compute |
-| **Generalization** | Handles multiple speakers | Works across different identities |
-| **Key Strength** | Performs well on budget hardware | Creates top-notch lip-sync animations |
-| **Key Weakness** | few SOTA comparisons available | Requires fine-tuning for pathological cases |
-
-Both papers present **scalable and efficient AI-based speech & animation tech**, so they are well-suited for **virtual avatars, dubbing, and real-time use**. 
+❌ **Limitations:**  
+- Performance may drop with extreme head poses.  
+- Works best with frontal facial images and clean audio.
 
 ---
+
+## Final Takeaways
+
+| Feature              | **XTTS (Voice)**       | **SadTalker (Video)**        |
+|---------------------|------------------------|------------------------------|
+| **Key Function**     | Text-to-speech + cloning | Realistic lip-sync video      |
+| **Input**            | Text + voice sample    | Face image + audio           |
+| **Output**           | Natural speech (.wav)  | Talking head video (.mp4)    |
+| **Open-source**      | ✅                     | ✅                            |
+| **Ideal For**        | Multilingual, custom speakers | Fast video avatars        |
+
+Together, **XTTS** and **SadTalker** offer a **powerful pipeline** to create expressive, personalized AI avatars suitable for media, communication, and entertainment applications.
+
+---
+## 🧠 AI Server Setup Instructions
+
+Clone and set up the following AI model repositories and place the corresponding Python orchestration files in the correct locations as shown below.
+
+### Step 1: Directory Structure
+AVATAR/ ← Root directory (create a folder named `AVATAR` and clone the repositories inside it)
+├── sad/
+│   └── SadTalker/              ← Clone from: https://github.com/OpenTalker/SadTalker
+│   └── talk.py                 ← Place your video generation logic here
+├── XTTS/
+│   └── TTS/                    ← Clone from: https://github.com/coqui-ai/TTS
+│       └── main.py             ← Place your voice generation logic here
+└── back.py                     ← Main Flask server to coordinate XTTS and SadTalker
+
+## 🚀 How to Run the Application
+
+
+▶️ **Steps:**
+
+1. Make sure all dependencies are installed (Python, Node.js, required packages).
+2. Navigate to the project root directory.
+
+### 🪟 For Windows Users (One-click using Windows Terminal):
+
+A ready-to-use batch script is provided to launch all services in separate terminals.
+Run the script by either:
+  - Double-clicking `run_all_services.bat`  
+  - Right-click → "Run with PowerShell"  
+  - Open a terminal and run:
+
+  ```bash
+  ./run_all_services.bat
+
+
+### 🪟 For Linux/macOS Users :
+Run the commands below in separate terminals (From the root directory of the project):
+
+# 1. Start XTTS voice generation server
+cd AVATAR/XTTS/TTS
+uvicorn main:app --host 0.0.0.0 --port 8001
+
+# 2. Start SadTalker video generation server
+cd AVATAR/sad
+uvicorn talk:app --host 0.0.0.0 --port 8002
+
+# 3. Start the main Python backend
+cd AVATAR/
+uvicorn back:app --host 0.0.0.0 --port 8003
+
+# 4. Start the React frontend
+cd frontend
+npm start
+
+# 5. Start the Express backend
+cd /backend/src
+node server.js
+
+
+## 📌 Contributors
+
+| Member Name   | GitHub ID                                                  | Milestone 1 PPT                                | Milestone 1 Video                                                                                  | Milestone 2 PPT                                | Milestone 2 Video                                                 |
+|---------------|------------------------------------------------------------|-----------------------------------------------|--------------------------------------------------------------------------------------------------|-----------------------------------------------|------------------------------------------------------------------|
+| V. Gayathri   | [Gayathri424](https://github.com/Gayathri424)             | [PPT](Milestone1/Milestone1_Gayathri.pptx)   | [Video](https://drive.google.com/drive/folders/1o261CINbZOw6xYOgZBcoKhMK_FP039Qr)                 | [PPT](Milestone2/Milestone2_Gayathri.pptx)   | [Video](https://www.youtube.com/watch?v=zWr62T9U9pY)             |
+| P. Praneetha  | [Praneetha826](https://github.com/Praneetha826)            | [PPT](Milestone1/Milestone-1_Praneetha.pptx) | [Video](https://youtu.be/Zpe5A5bYTZ4)                                                           | [PPT](Milestone2/Milestone2_Praneetha.pptx)  | [Video](https://www.youtube.com/watch?v=f3SkKz5ZNnQ)             |
+| G. Sreeshma   | [Sreeshma767](https://github.com/Sreeshma767)              | [PPT](Milestone1/Milestone1_Sreeshma.pptx)   | [Video](https://www.youtube.com/watch?v=7i2dm2PzNuE)                                            | [PPT](Milestone2/Milestone2_Sreeshma.pptx)   | [Video](https://youtu.be/PBj2CQrsfbU)                            |
+| P. Anushkaa   | [ANUSHKAAPARSI](https://github.com/ANUSHKAAPARSI)          | [PPT](Milestone1/Milestone1_Anushkaa.pptx)   | [Video](https://youtu.be/y2zOjcmLXY0)                                                           | [PPT](Milestone2/Milestone2_Anushkaa.pptx)   | [Video](https://youtu.be/yn414R8w2jc)                            |
+| V. Risheel    | [Risheel-kumar](https://github.com/Risheel-kumar)          | [PPT](Milestone1/Milestone1_Risheel.pptx)    | [Video](https://youtu.be/dEYDJZ90aNQ)                                                           | [PPT](Milestone2/Milestone2_Risheel.pptx)    | [Video](https://youtu.be/mcQ1CsVy3OA)                            |
+| G. Srithi     | [srithi-05](https://github.com/srithi-05)                  | [PPT](Milestone1/Milestone1_Srithi.pptx)     | [Video](https://youtu.be/HTguEdLbxPE?si=wS6KDrdPpw3tC972)                                       | [PPT](Milestone2/Milestone2_Srithi.pptx)     | [Video](https://youtu.be/af9RIjETkg8)                            |
+| P. Lavanya    | [lavanya-panthulu](https://github.com/lavanya-panthulu)    | [PPT](Milestone1/Milestone1_Lavanya.pptx)    | [Video](https://youtu.be/NMLaW-gHpkg)                                                           | [PPT](Milestone2/Milestone2_Lavanya.pptx)    | [Video](https://youtu.be/5Pae4VqpDEo)                            |
