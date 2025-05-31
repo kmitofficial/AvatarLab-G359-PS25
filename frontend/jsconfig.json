@@ -1,0 +1,11 @@
+{
+    "compilerOptions": {
+      "baseUrl": "src",
+      "jsx": "react-jsx",
+      "paths": {
+        "@/*": ["*"]
+      }
+    },
+    "include": ["src", "../../frontendfinal/frontend/src/context/authcontext.jsx", "../../frontendfinal/frontend/src/pages/logout.jsx"],
+    "exclude": ["node_modules", "build"]
+  }

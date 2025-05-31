@@ -1,0 +1,563 @@
+
+
+.hero-content {
+  padding: 6rem 2rem 3rem;
+  text-align: center;
+  background: radial-gradient(circle at center, rgba(125, 95, 255, 0.2), transparent 70%);
+  color: var(--text-main);
+}
+
+.hero-heading {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.hero-subheading {
+  font-size: 1.1rem;
+  max-width: 800px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.timeline-main-heading {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 600;
+  margin: 3rem 0 1rem;
+  color: var(--primary);
+}
+
+
+/* === TIMELINE NEW STYLE === */
+/* 
+.timeline-section {
+  padding: 4rem 2rem;
+  position: relative;
+  background-color: var(--background);
+  
+}
+
+.timeline-container {
+  position: relative;
+  margin: 0 auto;
+  padding: 0 1rem;
+  max-width: 1000px;
+}
+
+.vertical-line {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 4px;
+  height: 100%;
+  background: var(--border-glow);
+  transform: translateX(-50%);
+  z-index: 1;
+}
+
+.timeline-item {
+  position: relative;
+  width: 50%;
+  padding: 2rem 1.5rem;
+  scroll-snap-align: start;
+}
+
+.timeline-item.left {
+  left: 0;
+  text-align: right;
+}
+
+.timeline-item.right {
+  left: 50%;
+  text-align: left;
+}
+
+.timeline-content {
+  position: relative;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--border-glow);
+  background: var(--glass-bg);
+  z-index: 2;
+}
+
+.circle {
+  position: absolute;
+  top: 2rem;
+  left: 50%;
+  width: 16px;
+  height: 16px;
+  background-color: var(--primary);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  border: 2px solid white;
+}
+
+.timeline-phase {
+  color: var(--primary);
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin-bottom: 0.3rem;
+}
+
+.timeline-title {
+  font-size: 1.3rem;
+  margin: 0.2rem 0;
+  font-weight: 600;
+}
+
+.timeline-description {
+  font-size: 1rem;
+  color: var(--text-subtle);
+  margin-bottom: 1rem;
+}
+
+.timeline-contributors {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+.timeline-item.right .timeline-contributors {
+  justify-content: flex-start;
+}
+
+.contributor {
+  padding: 0.4rem 0.75rem;
+  border-radius: 1rem;
+  background: var(--glass-bg);
+  border: 1px solid var(--border-glow);
+  font-size: 0.85rem;
+  color: var(--text-main);
+}  */
+
+
+/* Variables */
+:root {
+  --background: #0f172a;
+  --primary: #4f46e5;
+  --border-glow: rgba(79, 70, 229, 0.5);
+  --glass-bg: rgba(255, 255, 255, 0.1);
+  --text-main: #e0e7ff;
+  --text-subtle: #94a3b8;
+  --text-accent: #a5b4fc;
+}
+
+/* TIMELINE SECTION */
+.timeline-section {
+  padding: 4rem 2rem;
+  position: relative;
+  background-color: var(--background);
+  color: var(--text-main);
+  user-select: none;
+}
+
+.timeline-main-heading {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 3rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--primary);
+  text-shadow: 0 0 6px var(--primary);
+}
+
+.timeline-container {
+  position: relative;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+/* Vertical Line */
+.vertical-line {
+  position: absolute;
+  top: 0;
+  left: 50%;       /* Center */
+  transform: translateX(-50%);
+  width: 6px;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 3px;
+  z-index: 0;
+}
+
+.vertical-line-progress {
+  position: fixed;
+  bottom: auto; /* remove bottom */
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 6px;
+  background: var(--primary);
+  border-radius: 3px;
+  transition: height 0.3s ease-out;
+  height: 0;
+  z-index: 1; /* above the line */
+}
+
+/* Timeline Items */
+.timeline-item {
+  position: relative;
+  width: 50%; /* Half width to position left or right */
+  margin-bottom: 3rem;
+  display: flex;
+  align-items: flex-start;
+}
+
+.timeline-item.left {
+  left: 0;
+  flex-direction: row;
+  justify-content: flex-end; /* So content is next to line */
+  text-align: right;
+  padding-right: 2rem;
+}
+
+.timeline-item.right {
+  left: 50%;
+  flex-direction: row-reverse;
+  justify-content: flex-start;
+  text-align: left;
+  padding-left: 2rem;
+}
+
+/* Icon Marker */
+.icon-marker {
+  position: relative;
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  background: var(--primary);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  box-shadow: 0 0 12px var(--primary);
+  cursor: default;
+  user-select: none;
+  margin: 0; /* Remove left/right margin */
+  z-index: 2;
+}
+
+/* Timeline Content Card */
+.timeline-content {
+  background: var(--glass-bg);
+  border: 1px solid var(--border-glow);
+  border-radius: 1rem;
+  padding: 1.5rem 2rem;
+  max-width: 100%;
+  backdrop-filter: blur(15px);
+  box-shadow: 0 8px 32px rgba(79, 70, 229, 0.25);
+  color: var(--text-main);
+  transition: max-height 0.4s ease, padding 0.3s ease;
+  overflow: hidden;
+  cursor: default;
+  user-select: text;
+  position: relative;
+}
+
+
+/* Header with phase & expand button */
+.timeline-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+}
+
+.timeline-phase {
+  color: var(--primary);
+  font-weight: 700;
+  font-size: 1.2rem;
+  margin: 0 0 0.2rem 0;
+  letter-spacing: 0.03em;
+  user-select: none;
+}
+
+.timeline-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+  user-select: none;
+}
+
+.expand-btn {
+  font-size: 2rem;
+  background: transparent;
+  border: none;
+  color: var(--primary);
+  user-select: none;
+  line-height: 1;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+}
+
+.expand-btn.expanded {
+  transform: rotate(180deg);
+}
+
+/* Details */
+.timeline-details {
+  margin-top: 1rem;
+  animation: fadeIn 0.5s ease forwards;
+}
+
+.timeline-description {
+  font-size: 1rem;
+  color: var(--text-subtle);
+  line-height: 1.5;
+  user-select: text;
+}
+
+.timeline-contributors {
+  margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.contributor {
+  background: var(--primary);
+  padding: 0.3rem 0.7rem;
+  border-radius: 9999px;
+  color: white;
+  font-size: 0.85rem;
+  font-weight: 600;
+  box-shadow: 0 0 6px var(--primary);
+  user-select: none;
+  cursor: default;
+  transition: transform 0.2s ease;
+}
+
+.contributor:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 12px var(--primary);
+}
+
+/* Fade in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .timeline-container {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+
+  .timeline-item.left,
+  .timeline-item.right {
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .icon-marker {
+    margin: 0 0 1rem 0;
+  }
+
+  .timeline-content {
+    max-width: 100%;
+  }
+}
+
+
+
+/* Carousal Section */
+
+.carousel-section {
+  padding: 4rem 2rem;
+  /* background-color: var(--background); */
+  background-color: black;
+  text-align: center;
+  color: var(--text-main);
+  position: relative;
+  overflow: hidden;
+}
+
+.carousel-title {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  font-weight: 600;
+}
+
+.carousel-wrapper {
+  display: flex;
+  align-items: center;
+  position: relative;
+  max-width: 100%;
+  justify-content: center;
+}
+
+.carousel-track {
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  gap: 1.5rem;
+  padding: 1rem 0;
+  width: 70%;
+  scrollbar-width: none;
+  justify-content: center;
+}
+
+.carousel-track::-webkit-scrollbar {
+  display: none;
+}
+
+.carousel-card {
+  min-width: 280px;
+  background: var(--glass-bg);
+  border: 1px solid var(--border-glow);
+  border-radius: 1rem;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  flex-shrink: 0;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-image img {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 1rem;
+}
+
+.card-content {
+  text-align: center;
+}
+
+.member-roll {
+  font-size: 0.9rem;
+  color: var(--text-subtle);
+  margin-bottom: 0.8rem;
+}
+
+.card-links {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.card-links a {
+  color: var(--text-main);
+  font-size: 1.5rem;
+  transition: color 0.3s ease;
+}
+
+.card-links a:hover {
+  color: var(--secondary);
+}
+
+.carousel-btn {
+  font-size: 2rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: none;
+  color: var(--text-subtle);
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  backdrop-filter: blur(10px);
+  border-radius: 50%;
+  transition: background 0.3s ease;
+  z-index: 2;
+}
+
+.carousel-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.left-btn {
+  margin-right: 1rem;
+}
+
+.right-btn {
+  margin-left: 1rem;
+}
+
+.carousel-single-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.carousel-card {
+  background: var(--glass-bg);
+  border: 1px solid var(--border-glow);
+  border-radius: 1rem;
+  padding: 2rem;
+  text-align: center;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.4);
+  width: 300px;
+  max-width: 90vw;
+}
+
+.card-image img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 1rem;
+}
+
+.card-content h3 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.card-content p {
+  font-size: 0.9rem;
+  color: var(--text-subtle);
+  margin: 0.5rem 0;
+}
+
+.card-links {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.card-links a {
+  color: var(--text-main);
+  font-size: 1.5rem;
+  transition: color 0.3s ease;
+}
+
+.card-links a:hover {
+  color: var(--secondary);
+}
+
+/* === Fade Animations === */
+.fade-in {
+  opacity: 1;
+  transition: opacity 0.4s ease-in;
+}
+
+.fade-out {
+  opacity: 0;
+  transition: opacity 0.2s ease-out;
+}
+

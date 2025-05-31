@@ -6,6 +6,7 @@ import uploadIcon from "../images/cloud-arrow-up-solid.svg";
 import avatar1 from "../images/th1.jpg"; // ✅ Make sure this image exists
 import "./generator.css";
 import axios from 'axios';
+import background from "../images/background.jpg";
 
 const AudioUploadPage = () => {
     const location = useLocation();
@@ -71,15 +72,15 @@ const AudioUploadPage = () => {
     }, [selectedAudioOption, selectedAudioFile]);
 
     useEffect(() => {
-    if (generatedVideoUrl && videoRef.current) {
-        console.log("Attempting programmatic play for video:", generatedVideoUrl);
-        videoRef.current.load(); // Ensure the video element is loaded
-        videoRef.current.play().catch(error => {
-            console.log("Programmatic video autoplay prevented:", error);
-            // This error means the browser blocked it.
-            // User needs to manually click play.
-        });
-    }
+        if (generatedVideoUrl && videoRef.current) {
+            console.log("Attempting programmatic play for video:", generatedVideoUrl);
+            videoRef.current.load(); // Ensure the video element is loaded
+            videoRef.current.play().catch(error => {
+                console.log("Programmatic video autoplay prevented:", error);
+                // This error means the browser blocked it.
+                // User needs to manually click play.
+            });
+        }
     }, [generatedVideoUrl]);
     // Autoplay preview (REMOVED - handled by user controls now)
     // useEffect(() => {
@@ -164,14 +165,14 @@ const AudioUploadPage = () => {
 
         // Validation
         if (avatarIndex === null) {
-             setError("Avatar selection is missing. Please go back.");
-             setIsLoading(false); // Make sure to reset loading on validation error
-             return;
+            setError("Avatar selection is missing. Please go back.");
+            setIsLoading(false); // Make sure to reset loading on validation error
+            return;
         }
         if (!script) {
-             setError("Script is missing. Please go back.");
-             setIsLoading(false);
-             return;
+            setError("Script is missing. Please go back.");
+            setIsLoading(false);
+            return;
         }
         if (!selectedAudioFile && !selectedAudioOption) {
             setError("Please select a sample audio or upload an audio file.");
@@ -206,7 +207,7 @@ const AudioUploadPage = () => {
                 setError("Authentication error (parsing). Please log in again.");
                 setIsLoading(false);
                 return;
-             }
+            }
         }
         else {
             console.log("[handleGenerateVideo] userInfo NOT found in localStorage.");
@@ -234,7 +235,7 @@ const AudioUploadPage = () => {
             console.log("Video generation response:", response.data);
             if (response.data && response.data.videoUrl) {
                 setGeneratedVideoUrl(response.data.videoUrl);
-                 alert(`Video generated successfully! It should appear in the avatar preview area.`);
+                alert(`Video generated successfully! It should appear in the avatar preview area.`);
             } else {
                 console.error("Backend response missing videoUrl:", response.data);
                 setError("Video generated, but no URL received from backend.");
@@ -249,36 +250,11 @@ const AudioUploadPage = () => {
         console.log("--- [handleGenerateVideo] Function END ---");
     };
 
-    // const handleFetchTestVideo = async () => {
-    //     setError(null);
-    //     setGeneratedVideoUrl(null); // Clear previous video
-    //     setIsLoading(true);
-    //     console.log("--- [handleFetchTestVideo] Requesting test video URL ---");
-
-    //     try {
-    //         // Call the new test endpoint
-    //         const response = await axios.get(`${BACKEND_URL}/api/fast/test-video`, {
-    //             responseType: 'blob' // Expect binary data directly if the test endpoint is serving a file, or 'json' if it returns a URL.
-    //                                  // Based on your new Node.js `res.sendFile`, it will be a file, so `blob` or `arraybuffer` is fine.
-    //         });
-
-    //         // For res.sendFile, axios returns a Blob. Need to create a URL for it.
-    //         const videoBlobUrl = URL.createObjectURL(response.data);
-    //         setGeneratedVideoUrl(videoBlobUrl);
-    //         alert("Test video loaded! Check the player.");
-
-    //     } catch (err) {
-    //         console.error("Error fetching test video:", err.response?.data || err.message);
-    //         setError(`Failed to fetch test video: ${err.response?.data?.message || err.message}`);
-    //     } finally {
-    //         setIsLoading(false);
-    //     }
-    //     console.log("--- [handleFetchTestVideo] Function END ---");
-    // };
-
 
     return (
-        <div className="card-container">
+        <div className="card-container"
+            style={{ backgroundImage: `url(${background})`, backgroundRepeat: "no-repeat", backgroundSize: "cover" }}
+        >
             <div className="card">
                 {/* Left Side: Audio Upload */}
                 <div className="form-side">
@@ -324,37 +300,37 @@ const AudioUploadPage = () => {
                     )}
                 </div>
 
-                 <div className="avatar-side">
-                <h3 className="avatar-selected-text">Avatar selected</h3>
-                <div className="avatar-preview-box">
-                    {generatedVideoUrl && !isLoading ? ( // If video URL exists and not loading, show video
-                        <div className="generated-video-wrapper">
-                            <video
-                                ref={videoRef}
-                                // width="400"
-                                controls
-                                key={generatedVideoUrl}
-                                className="generated-video"
-                                // Add autoplay and muted for potential immediate playback
-                                autoPlay
-                                muted
-                            >
-                                <source src={generatedVideoUrl} type="video/mp4" />
-                                Your browser does not support the video tag.
-                            </video>
-                        </div>
-                    ) : ( // Otherwise, show avatar or "No avatar selected" message
-                        avatarSrc ? (
-                            <div className="avatar-image-wrapper">
-                                <img src={avatarSrc} alt={`Avatar ${avatarIndex !== null ? avatarIndex + 1 : ''}`} className="avatar-image" style={{ width: "400px", height: "auto" }}/>
+                <div className="avatar-side">
+                    <h3 className="avatar-selected-text">Avatar selected</h3>
+                    <div className="avatar-preview-box">
+                        {generatedVideoUrl && !isLoading ? ( // If video URL exists and not loading, show video
+                            <div className="generated-video-wrapper">
+                                <video
+                                    ref={videoRef}
+                                    // width="400"
+                                    controls
+                                    key={generatedVideoUrl}
+                                    className="generated-video"
+                                    // Add autoplay and muted for potential immediate playback
+                                    autoPlay
+                                    muted
+                                >
+                                    <source src={generatedVideoUrl} type="video/mp4" />
+                                    Your browser does not support the video tag.
+                                </video>
                             </div>
-                        ) : (
-                            <p>No Avatar selected.</p>
-                        )
-                    )}
-                </div> {/* End of avatar-preview-box */}
+                        ) : ( // Otherwise, show avatar or "No avatar selected" message
+                            avatarSrc ? (
+                                <div className="avatar-image-wrapper">
+                                    <img src={avatarSrc} alt={`Avatar ${avatarIndex !== null ? avatarIndex + 1 : ''}`} className="avatar-image" style={{ width: "400px", height: "auto" }} />
+                                </div>
+                            ) : (
+                                <p>No Avatar selected.</p>
+                            )
+                        )}
+                    </div> {/* End of avatar-preview-box */}
 
-                {/* {generatedVideoUrl && !isLoading && (
+                    {/* {generatedVideoUrl && !isLoading && (
                     // <a href={generatedVideoUrl} download={`generated_video_${avatarIndex}.mp4`} className="text-purple-400 hover:underline mt-4 block text-center download-link-below-box">
                     //     Download Video
                     // </a>
@@ -363,16 +339,16 @@ const AudioUploadPage = () => {
                     // </Button>
                 )} */}
 
-                <div className="button-wrapper">
-                    <Button
-                        className="generate-button"
-                        onClick={handleGenerateVideo}
-                        disabled={isLoading}
-                    >
-                        {isLoading ? "Generating..." : "Generate Video"}
-                    </Button>
+                    <div className="button-wrapper">
+                        <Button
+                            className="generate-button"
+                            onClick={handleGenerateVideo}
+                            disabled={isLoading}
+                        >
+                            {isLoading ? "Generating..." : "Generate Video"}
+                        </Button>
 
-                    {/* <Button
+                        {/* <Button
                             className="generate-button" // Or a different style
                             onClick={handleFetchTestVideo}
                             disabled={isLoading}
@@ -380,9 +356,9 @@ const AudioUploadPage = () => {
                         >
                             {isLoading ? "Loading Test Video..." : "Load Test Video"}
                     </Button> */}
-                </div>
+                    </div>
 
-            </div> {/* End of avatar-side */}
+                </div> {/* End of avatar-side */}
 
                 {/* Back Button */}
                 {/* <Button
