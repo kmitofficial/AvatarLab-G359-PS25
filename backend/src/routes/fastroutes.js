@@ -1,225 +1,3 @@
-// const express = require("express");
-// const axios = require("axios");
-// const User = require("../models/User");
-// const protect = require("../middleware/authMiddleware");
-// const fs = require("fs");
-// const FormData = require("form-data");
-// const path = require("path");
-// const multer = require("multer");
-
-// const router = express.Router();
-
-// const uploadDir = path.join(__dirname, "..", "uploads"); // Create 'uploads' folder in backend root
-// if (!fs.existsSync(uploadDir)) {
-//     fs.mkdirSync(uploadDir, { recursive: true });
-// }
-
-// const storage = multer.diskStorage({
-//     destination: function (req, file, cb) {
-//         cb(null, uploadDir); // Save uploaded files to 'uploads/'
-//     },
-//     filename: function (req, file, cb) {
-//         // Create a unique filename to avoid conflicts
-//         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-//         cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname));
-//     }
-// });
-
-// const upload = multer({ storage: storage });
-
-// const BASE_AVATAR_PATH = "D:\\avatarlab\\backend\\src\\avatars"; // Example base path for avatar images
-// const BASE_SAMPLE_AUDIO_PATH = "D:\\avatarlab\\backend\\src\\sampleaudio"; // Example base path for sample audio
-// const BASE_REF_PATH = "D:\\avatarlab\\ref_eyeblink.mp4"; // Example base path for ref files (eye, pose) - adjust if needed
-
-// // Helper to get avatar image path based on index
-// const getAvatarImagePath = (index) => {
-//   // Assumes images are named avatar_0.jpg, avatar_1.jpg etc. ADJUST FILENAME/EXTENSION AS NEEDED
-//   const filename = `th${index}.jpg`;
-//   return path.join(BASE_AVATAR_PATH, filename);
-// };
-
-// // Helper to get sample audio path
-// const getSampleAudioPath = (sampleId) => {
-//    // Assumes audio files are sample1.mp3, sample2.mp3. ADJUST FILENAME/EXTENSION AS NEEDED
-//   const filename = `${sampleId}.wav`;
-//   return path.join(BASE_SAMPLE_AUDIO_PATH, filename);
-// };
-
-// // POST /api/fast/sendapi
-// router.post("/sendapi", protect,upload.single('audio_data'), async (req, res) => {
-//   console.log("Received request body:", req.body);
-//   console.log("Received file:", req.file);
-
-//   try {
-//     const { script, avatar_id, audio_type, audio_data } = req.body;
-//     const userId = req.user._id;
-
-//     // --- Validation ---
-//     if (!script) return res.status(400).json({ message: "Script is required" });
-//     if (avatar_id === undefined || avatar_id === null) return res.status(400).json({ message: "Avatar ID is required" });
-//     if (!audio_type) return res.status(400).json({ message: "Audio type is required" });
-//     if (audio_type === 'sample' && !audio_data) return res.status(400).json({ message: "Audio data (sample ID) is required for sample type" });
-//     if (audio_type === 'upload' && !req.file) return res.status(400).json({ message: "Audio data (file) is required for upload type" });
-
-//     // --- Determine File Paths for FastAPI ---
-//     const avatarIndex = parseInt(avatar_id, 10);
-//     const dynamicImagePath = getAvatarImagePath(avatarIndex);
-
-//     let dynamicAudioPath = null;
-//     if (audio_type === 'sample') {
-//         dynamicAudioPath = getSampleAudioPath(audio_data); // audio_data is "sample1" or "sample2"
-//     } else if (audio_type === 'upload' && req.file) {
-//         dynamicAudioPath = req.file.path; // Use the path where multer saved the file
-//     }
-
-//     // --- Check if files exist ---
-//      if (!fs.existsSync(dynamicImagePath)) {
-//          console.error(`Avatar image not found at: ${dynamicImagePath}`);
-//          return res.status(400).json({ message: `Selected avatar image not found on server (ID: ${avatarIndex}).` });
-//      }
-//      if (!dynamicAudioPath || !fs.existsSync(dynamicAudioPath)) {
-//          console.error(`Audio file not found at: ${dynamicAudioPath}`);
-//          return res.status(400).json({ message: `Selected audio source not found on server.` });
-//      }
-//      // Check reference files (adjust paths/logic if needed)
-//      const refEyeBlinkPath = BASE_REF_PATH
-//      const refPosePath = BASE_REF_PATH
-//      if (!fs.existsSync(refEyeBlinkPath) || !fs.existsSync(refPosePath)) {
-//          console.error(`Reference files not found in ${BASE_REF_PATH}`);
-//          // Decide if this is a fatal error or if defaults can be used
-//          return res.status(500).json({ message: `Required reference files not found.` });
-//      }
-//     // --- End File Check ---
-
-//     // Prepare FormData to send to FastAPI
-//     const form = new FormData();
-//     form.append("text", script);
-//     form.append("language", "en");
-//     form.append("language", "en"); // Keep hardcoded or make dynamic if needed
-//     form.append("speaker_wav", fs.createReadStream(dynamicAudioPath)); // Use dynamic path
-//     form.append("image", fs.createReadStream(dynamicImagePath)); // Use dynamic path
-//     form.append("ref_eyeblink", fs.createReadStream(refEyeBlinkPath)); // Keep hardcoded or make dynamic
-//     form.append("ref_pose", fs.createReadStream(refPosePath)); // Keep hardcoded or make dynamic
-
-//     console.log("Sending data to FastAPI:", { script, avatar_id, audio_type, dynamicAudioPath, dynamicImagePath });
-
-//     // Call FastAPI
-//     const response = await axios.post("https://75fa-34-124-223-239.ngrok-free.app/process/", form, {
-//       headers: {
-//         ...form.getHeaders(),
-//         "Authorization": `Bearer ${req.user.token}`,
-//       }
-//     });
-
-//     const generatedVideoPath = response.data.video_path;
-
-//     // Ensure 'videos' folder exists
-//     if (!generatedVideoPath || !fs.existsSync(generatedVideoPath)) {
-//       console.error(`FastAPI did not return a valid video path or file not found: ${generatedVideoPath}`);
-//       // Clean up uploaded file if it exists
-//       if (audio_type === 'upload' && req.file) fs.unlinkSync(req.file.path);
-//       return res.status(500).json({ message: "Video generation failed (FastAPI result invalid)." });
-//     }
-
-//     // Ensure 'videos' folder exists relative to THIS file's location
-//     const videosDir = path.join(__dirname, "..", "public", "videos"); // Save in public/videos to serve easily
-//     if (!fs.existsSync(videosDir)) {
-//         fs.mkdirSync(videosDir, { recursive: true });
-//     }
-
-//     const videoFilename = `output_${userId}_${Date.now()}.mp4`; // Include userId for uniqueness
-//     const savePath = path.join(videosDir, videoFilename);
-//     const publicVideoUrl = `/videos/${videoFilename}`; // URL path
-
-//     fs.renameSync(generatedVideoPath, savePath); // Move the video from FastAPI's output location
-//     console.log(`Video moved to: ${savePath}`);
-
-//     // Clean up uploaded audio file if it was an upload
-//     if (audio_type === 'upload' && req.file) {
-//         fs.unlink(req.file.path, (err) => { // Delete asynchronously
-//               if (err) console.error("Error deleting uploaded audio file:", err);
-//               else console.log("Uploaded audio file deleted:", req.file.path);
-//         });
-//     }
-
-//     // Save video reference to user model in MongoDB
-//     const updatedUser = await User.findByIdAndUpdate(userId, {
-//         $push: {
-//             videos: {
-//                 filename: videoFilename,
-//                 filepath: savePath, // Store server path if needed for internal use
-//                 url: publicVideoUrl, // Store URL path for frontend access
-//                 createdAt: new Date()
-//             }
-//         }
-//     }, { new: true }); // Return updated document if needed
-
-//     if (!updatedUser) {
-//           // Handle case where user might not be found, though 'protect' should prevent this
-//           console.error("User not found for saving video path:", userId);
-//           // Video is saved, but DB update failed. Decide how to handle.
-//     }
-
-//     // Send response back to frontend
-//     res.status(200).json({
-//         message: "Video generated successfully!",
-//         videoFilename: videoFilename,
-//         videoUrl: publicVideoUrl, // Send the public URL
-//     });
-
-//     } catch (err) {
-//     console.error("Error in /sendapi route:", err);
-
-//     // Clean up uploaded file if an error occurred AFTER upload but before success
-//     if (req.file && fs.existsSync(req.file.path)) {
-//         fs.unlink(req.file.path, (unlinkErr) => {
-//               if (unlinkErr) console.error("Error deleting uploaded audio file during error handling:", unlinkErr);
-//         });
-//     }
-
-//     // Check if the error is from axios (FastAPI call)
-//     if (err.response) {
-//         console.error('FastAPI Error Data:', err.response.data);
-//         console.error('FastAPI Error Status:', err.response.status);
-//         return res.status(500).json({ message: `Video generation failed: ${err.response.data?.detail || 'FastAPI Error'}` });
-//     } else if (err.request) {
-//         // The request was made but no response was received
-//         console.error('FastAPI No Response:', err.request);
-//           return res.status(500).json({ message: "Video generation failed: No response from processing service." });
-//     } else {
-//         // Something happened in setting up the request that triggered an Error
-//         console.error('Error Setting Up Request:', err.message);
-//         return res.status(500).json({ message: `Server error: ${err.message}` });
-//     }
-//     }
-// });
-
-// router.get("/test-video", (req, res) => {
-//     const testVideoFilename = "test_video.mp4"; // The name of the file you placed in public/videos
-//     const publicVideoUrl = `/videos/${testVideoFilename}`; // The URL path
-
-//     // Optional: Server-side check if the file actually exists, for robustnes
-//     // This path needs to be relative to where fastroutes.js is, to find the public folder.
-//     // Assuming 'public' is at the project root, and 'fastroutes.js' is in a 'routes' subfolder:
-//     const serverFilePath = path.join(__dirname, "..", "public", "videos", testVideoFilename);
-
-//     if (fs.existsSync(serverFilePath)) {
-//         console.log(`[Test Endpoint] Serving URL for existing file: ${publicVideoUrl}`);
-//         res.status(200).json({
-//             message: "Test video URL provided successfully.",
-//             videoUrl: publicVideoUrl,
-//             // You could also provide a test audio URL if you have one in public/audios
-//             // audioUrl: "/audios/test_audio.wav"
-//         });
-//     } else {
-//         console.error(`[Test Endpoint] Test video file not found at: ${serverFilePath}`);
-//         res.status(404).json({
-//             message: `Test video file '${testVideoFilename}' not found on server. Please ensure it's in the 'public/videos' directory.`,
-//             videoUrl: null,
-//         });
-//     }
-// });
-
 
 // module.exports = router;
 const express = require("express");
@@ -325,7 +103,7 @@ router.post("/sendapi", protect, upload.single('audio_data'), async (req, res) =
         console.log("Sending data to FastAPI:", { script, avatar_id, audio_type, dynamicAudioPath, dynamicImagePath });
 
         // Call FastAPI and expect a binary arraybuffer response (the video file)
-        const response = await axios.post("https://localhost:5000/process/", form, { // Make sure this ngrok URL is up-to-date
+        const response = await axios.post("https://7876-34-143-251-209.ngrok-free.app/process/", form, { // Make sure this ngrok URL is up-to-date
             headers: {
                 ...form.getHeaders(),
                 // 'Authorization': `Bearer ${req.user.token}`, // FastAPI does not use this Authorization
@@ -377,15 +155,18 @@ router.post("/sendapi", protect, upload.single('audio_data'), async (req, res) =
             });
         }
 
-        // Save video reference to user model in MongoDB
+        const newVideoData = { // Create the object first
+            filename: `generated_video_${userId}_${Date.now()}.mp4`, // Friendly name for display
+            url: publicCloudinaryUrl,             // Store the public Cloudinary URL
+            cloudinaryPublicId: cloudinaryAssetPublicId, // Store Public ID for potential future deletion
+            createdAt: new Date()
+        };
+
+
+
         const updatedUser = await User.findByIdAndUpdate(userId, {
             $push: {
-                videos: {
-                    filename: `generated_video_${userId}_${Date.now()}.mp4`, // Friendly name for display
-                    url: publicCloudinaryUrl,           // Store the public Cloudinary URL
-                    cloudinaryPublicId: cloudinaryAssetPublicId, // Store Public ID for potential future deletion
-                    createdAt: new Date()
-                }
+                videos: newVideoData // Push the newVideoData object
             }
         }, { new: true });
 
@@ -394,11 +175,26 @@ router.post("/sendapi", protect, upload.single('audio_data'), async (req, res) =
             // Decide how to handle this: still respond successfully, but log a warning.
         }
 
+        const savedVideoSubdocument = updatedUser.videos.find(video => video.url === publicCloudinaryUrl);
+
+        let videoIdToSend = null;
+        if (savedVideoSubdocument) {
+            videoIdToSend = savedVideoSubdocument._id;
+        } else {
+            // Fallback: If for some reason find fails, try the last one or log an error
+            console.warn("Could not find the newly added video subdocument by URL. Attempting to use last added.");
+            if (updatedUser.videos.length > 0) {
+                videoIdToSend = updatedUser.videos[updatedUser.videos.length - 1]._id;
+            }
+        }
+
+
         // Send response back to frontend
         res.status(200).json({
             message: "Video generated successfully!",
             videoFilename: `generated_video_${userId}_${Date.now()}.mp4`, // Friendly name
-            videoUrl: publicCloudinaryUrl, // Send the public Cloudinary URL to frontend
+            videoUrl: publicCloudinaryUrl,
+            videoId: videoIdToSend
         });
 
     } catch (err) {
@@ -568,10 +364,6 @@ router.delete('/history/:id', protect, async (req, res) => {
                 console.log(`Cloudinary asset deleted: ${videoToDelete.cloudinaryPublicId}`);
             } catch (cloudinaryErr) {
                 console.error(`Failed to delete Cloudinary asset ${videoToDelete.cloudinaryPublicId}:`, cloudinaryErr);
-                // Decide how to handle this:
-                // 1. Continue deleting from DB even if Cloudinary fails (less strict)
-                // 2. Return an error and don't delete from DB (more strict, but might leave orphaned DB entry)
-                // For now, we'll log and continue to delete from DB.
             }
         }
 
