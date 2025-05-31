@@ -1,0 +1,117 @@
+:root {
+  --background: #0f2027; /* dark blue/green */
+  --glass-bg: rgba(255, 255, 255, 0.1);
+  --border-glow: rgba(255, 255, 255, 0.2);
+  --primary: #00bcd4;
+  --text-main: #e0e0e0;
+  --text-subtle: #b0b0b0;
+}
+
+.timeline-section {
+  padding: 4rem 2rem;
+  background: var(--background);
+  position: relative;
+  min-height: 100vh;
+  color: var(--text-main);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.timeline-heading {
+  text-align: center;
+  font-size: 2.4rem;
+  margin-bottom: 3rem;
+  font-weight: 700;
+}
+
+.timeline-track {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.timeline-card {
+  width: 90%;
+  max-width: 700px;
+  margin: 1.5rem 0;
+  padding: 1.5rem 2rem;
+  border-radius: 1.2rem;
+  border: 1px solid var(--border-glow);
+  backdrop-filter: blur(10px);
+  background: var(--glass-bg);
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 0 10px rgba(0, 188, 212, 0.1);
+  outline: none;
+}
+
+.timeline-card:hover,
+.timeline-card:focus {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px var(--primary);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.icon {
+  font-size: 2.2rem;
+  color: var(--primary);
+  min-width: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-header h4 {
+  margin: 0;
+  font-weight: 600;
+  color: var(--primary);
+  font-size: 1.1rem;
+}
+
+.card-header h3 {
+  margin: 0;
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: var(--text-main);
+}
+
+.card-content {
+  margin-top: 1rem;
+  font-size: 1rem;
+  color: var(--text-subtle);
+  overflow: hidden;
+}
+
+.card-content p {
+  margin: 0 0 1rem 0;
+  line-height: 1.5;
+}
+
+.contributors {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.badge {
+  display: inline-block;
+  background: var(--glass-bg);
+  color: var(--text-main);
+  border: 1px solid var(--border-glow);
+  border-radius: 12px;
+  padding: 0.3rem 0.8rem;
+  font-size: 0.85rem;
+  user-select: none;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.badge:hover,
+.badge:focus {
+  background: var(--primary);
+  color: white;
+}
