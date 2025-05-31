@@ -106,14 +106,16 @@ Together, **XTTS** and **SadTalker** offer a **powerful pipeline** to create exp
 Clone and set up the following AI model repositories and place the corresponding Python orchestration files in the correct locations as shown below.
 
 ### Step 1: Directory Structure
-AVATAR/ ← Root directory (create a folder named `AVATAR` and clone the repositories inside it)
+```
+AVATAR/                         ← Root directory (create a folder named `AVATAR` and clone the repositories inside it)
 ├── sad/
-│   └── SadTalker/              ← Clone from: https://github.com/OpenTalker/SadTalker
+│   ├── SadTalker/              ← Clone from: https://github.com/OpenTalker/SadTalker
 │   └── talk.py                 ← Place your video generation logic here
 ├── XTTS/
 │   └── TTS/                    ← Clone from: https://github.com/coqui-ai/TTS
 │       └── main.py             ← Place your voice generation logic here
 └── back.py                     ← Main Flask server to coordinate XTTS and SadTalker
+```
 
 ## 🚀 How to Run the Application
 
@@ -131,33 +133,41 @@ Run the script by either:
   - Right-click → "Run with PowerShell"  
   - Open a terminal and run:
 
-  ```bash
+```bash
   ./run_all_services.bat
-
+```
 
 ### 🪟 For Linux/macOS Users :
 Run the commands below in separate terminals (From the root directory of the project):
 
 # 1. Start XTTS voice generation server
+```bash
 cd AVATAR/XTTS/TTS
 uvicorn main:app --host 0.0.0.0 --port 8001
+```
 
 # 2. Start SadTalker video generation server
+```bash
 cd AVATAR/sad
 uvicorn talk:app --host 0.0.0.0 --port 8002
+```
 
 # 3. Start the main Python backend
+```bash
 cd AVATAR/
 uvicorn back:app --host 0.0.0.0 --port 8003
+```
 
 # 4. Start the React frontend
+```bash
 cd frontend
 npm start
-
+```
 # 5. Start the Express backend
+```bash
 cd /backend/src
 node server.js
-
+```
 
 ## 📌 Contributors
 | **Member Name** | **GitHub ID**                                           | **Milestone 1 PPT**                          | **Milestone 1 Video**                                     | **Milestone 2 PPT**                         | **Milestone 2 Video**                                |
