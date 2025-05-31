@@ -106,14 +106,16 @@ Together, **XTTS** and **SadTalker** offer a **powerful pipeline** to create exp
 Clone and set up the following AI model repositories and place the corresponding Python orchestration files in the correct locations as shown below.
 
 ### Step 1: Directory Structure
-AVATAR/ ← Root directory (create a folder named `AVATAR` and clone the repositories inside it)
+```
+AVATAR/                         ← Root directory (create a folder named `AVATAR` and clone the repositories inside it)
 ├── sad/
-│   └── SadTalker/              ← Clone from: https://github.com/OpenTalker/SadTalker
+│   ├── SadTalker/              ← Clone from: https://github.com/OpenTalker/SadTalker
 │   └── talk.py                 ← Place your video generation logic here
 ├── XTTS/
 │   └── TTS/                    ← Clone from: https://github.com/coqui-ai/TTS
 │       └── main.py             ← Place your voice generation logic here
 └── back.py                     ← Main Flask server to coordinate XTTS and SadTalker
+```
 
 ## 🚀 How to Run the Application
 
@@ -131,42 +133,49 @@ Run the script by either:
   - Right-click → "Run with PowerShell"  
   - Open a terminal and run:
 
-  ```bash
+```bash
   ./run_all_services.bat
-
+```
 
 ### 🪟 For Linux/macOS Users :
 Run the commands below in separate terminals (From the root directory of the project):
 
 # 1. Start XTTS voice generation server
+```bash
 cd AVATAR/XTTS/TTS
 uvicorn main:app --host 0.0.0.0 --port 8001
+```
 
 # 2. Start SadTalker video generation server
+```bash
 cd AVATAR/sad
 uvicorn talk:app --host 0.0.0.0 --port 8002
+```
 
 # 3. Start the main Python backend
+```bash
 cd AVATAR/
 uvicorn back:app --host 0.0.0.0 --port 8003
+```
 
 # 4. Start the React frontend
+```bash
 cd frontend
 npm start
-
+```
 # 5. Start the Express backend
+```bash
 cd /backend/src
 node server.js
-
+```
 
 ## 📌 Contributors
-
-| Member Name   | GitHub ID                                                  | Milestone 1 PPT                                | Milestone 1 Video                                                                                  | Milestone 2 PPT                                | Milestone 2 Video                                                 |
-|---------------|------------------------------------------------------------|-----------------------------------------------|--------------------------------------------------------------------------------------------------|-----------------------------------------------|------------------------------------------------------------------|
-| V. Gayathri   | [Gayathri424](https://github.com/Gayathri424)             | [PPT](Milestone1/Milestone1_Gayathri.pptx)   | [Video](https://drive.google.com/drive/folders/1o261CINbZOw6xYOgZBcoKhMK_FP039Qr)                 | [PPT](Milestone2/Milestone2_Gayathri.pptx)   | [Video](https://www.youtube.com/watch?v=zWr62T9U9pY)             |
-| P. Praneetha  | [Praneetha826](https://github.com/Praneetha826)            | [PPT](Milestone1/Milestone-1_Praneetha.pptx) | [Video](https://youtu.be/Zpe5A5bYTZ4)                                                           | [PPT](Milestone2/Milestone2_Praneetha.pptx)  | [Video](https://www.youtube.com/watch?v=f3SkKz5ZNnQ)             |
-| G. Sreeshma   | [Sreeshma767](https://github.com/Sreeshma767)              | [PPT](Milestone1/Milestone1_Sreeshma.pptx)   | [Video](https://www.youtube.com/watch?v=7i2dm2PzNuE)                                            | [PPT](Milestone2/Milestone2_Sreeshma.pptx)   | [Video](https://youtu.be/PBj2CQrsfbU)                            |
-| P. Anushkaa   | [ANUSHKAAPARSI](https://github.com/ANUSHKAAPARSI)          | [PPT](Milestone1/Milestone1_Anushkaa.pptx)   | [Video](https://youtu.be/y2zOjcmLXY0)                                                           | [PPT](Milestone2/Milestone2_Anushkaa.pptx)   | [Video](https://youtu.be/yn414R8w2jc)                            |
-| V. Risheel    | [Risheel-kumar](https://github.com/Risheel-kumar)          | [PPT](Milestone1/Milestone1_Risheel.pptx)    | [Video](https://youtu.be/dEYDJZ90aNQ)                                                           | [PPT](Milestone2/Milestone2_Risheel.pptx)    | [Video](https://youtu.be/mcQ1CsVy3OA)                            |
-| G. Srithi     | [srithi-05](https://github.com/srithi-05)                  | [PPT](Milestone1/Milestone1_Srithi.pptx)     | [Video](https://youtu.be/HTguEdLbxPE?si=wS6KDrdPpw3tC972)                                       | [PPT](Milestone2/Milestone2_Srithi.pptx)     | [Video](https://youtu.be/af9RIjETkg8)                            |
-| P. Lavanya    | [lavanya-panthulu](https://github.com/lavanya-panthulu)    | [PPT](Milestone1/Milestone1_Lavanya.pptx)    | [Video](https://youtu.be/NMLaW-gHpkg)                                                           | [PPT](Milestone2/Milestone2_Lavanya.pptx)    | [Video](https://youtu.be/5Pae4VqpDEo)                            |
+| **Member Name** | **GitHub ID**                                           | **Milestone 1 PPT**                          | **Milestone 1 Video**                                     | **Milestone 2 PPT**                         | **Milestone 2 Video**                                |
+| --------------- | ------------------------------------------------------- | -------------------------------------------- | --------------------------------------------------------- | ------------------------------------------- | ---------------------------------------------------- |
+| V. Gayathri     | [Gayathri424](https://github.com/Gayathri424)           | [PPT](Milestone1/Milestone1_Gayathri.pptx)   | [Video](https://youtu.be/hy0EjIdpxPQ)                     | [PPT](Milestone2/Milestone2_Gayathri.pptx)  | [Video](https://www.youtube.com/watch?v=zWr62T9U9pY) |
+| P. Praneetha    | [Praneetha826](https://github.com/Praneetha826)         | [PPT](Milestone1/Milestone-1_Praneetha.pptx) | [Video](https://youtu.be/Zpe5A5bYTZ4)                     | [PPT](Milestone2/Milestone2_Praneetha.pptx) | [Video](https://www.youtube.com/watch?v=f3SkKz5ZNnQ) |
+| G. Sreeshma     | [Sreeshma767](https://github.com/Sreeshma767)           | [PPT](Milestone1/Milestone1_Sreeshma.pptx)   | [Video](https://www.youtube.com/watch?v=7i2dm2PzNuE)      | [PPT](Milestone2/Milestone2_Sreeshma.pptx)  | [Video](https://youtu.be/PBj2CQrsfbU)                |
+| P. Anushkaa     | [ANUSHKAAPARSI](https://github.com/ANUSHKAAPARSI)       | [PPT](Milestone1/Milestone1_Anushkaa.pptx)   | [Video](https://youtu.be/y2zOjcmLXY0)                     | [PPT](Milestone2/Milestone2_Anushkaa.pptx)  | [Video](https://youtu.be/yn414R8w2jc)                |
+| V. Risheel      | [Risheel-kumar](https://github.com/Risheel-kumar)       | [PPT](Milestone1/Milestone1_Risheel.pptx)    | [Video](https://youtu.be/dEYDJZ90aNQ)                     | [PPT](Milestone2/Milestone2_Risheel.pptx)   | [Video](https://youtu.be/mcQ1CsVy3OA)                |
+| G. Srithi       | [srithi-05](https://github.com/srithi-05)               | [PPT](Milestone1/Milestone1_Srithi.pptx)     | [Video](https://youtu.be/HTguEdLbxPE?si=wS6KDrdPpw3tC972) | [PPT](Milestone2/Milestone2_Srithi.pptx)    | [Video](https://youtu.be/af9RIjETkg8)                |
+| P. Lavanya      | [lavanya-panthulu](https://github.com/lavanya-panthulu) | [PPT](Milestone1/Milestone1_Lavanya.pptx)    | [Video](https://youtu.be/NMLaW-gHpkg)                     | [PPT](Milestone2/Milestone2_Lavanya.pptx)   | [Video](https://youtu.be/5Pae4VqpDEo)                |
