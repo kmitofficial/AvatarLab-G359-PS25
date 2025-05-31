@@ -103,7 +103,7 @@ router.post("/sendapi", protect, upload.single('audio_data'), async (req, res) =
         console.log("Sending data to FastAPI:", { script, avatar_id, audio_type, dynamicAudioPath, dynamicImagePath });
 
         // Call FastAPI and expect a binary arraybuffer response (the video file)
-        const response = await axios.post("https://7876-34-143-251-209.ngrok-free.app/process/", form, { // Make sure this ngrok URL is up-to-date
+        const response = await axios.post("http://127.0.0.1:8003/process/", form, { // Make sure this ngrok URL is up-to-date
             headers: {
                 ...form.getHeaders(),
                 // 'Authorization': `Bearer ${req.user.token}`, // FastAPI does not use this Authorization
@@ -380,24 +380,5 @@ router.delete('/history/:id', protect, async (req, res) => {
     }
 });
 
-// REMOVED: /test-video route is no longer relevant for S3/Cloudinary storage
-// If you need a test endpoint, it should return a hardcoded Cloudinary URL or similar.
-// router.get("/test-video", (req, res) => {
-//     // IMPORTANT: Replace 'test_video.mp4' with the actual filename of a video
-//     // you have placed in D:\avatarlab\backend\src\public\videos\
-//     const testVideoFilename = "output_6817447ef325ecab1fb52175_1746588998217.mp4"; // <--- CHANGE THIS FILENAME
-//     const serverFilePath = path.join(__dirname, "..", "public", "videos", testVideoFilename);
-
-//     if (fs.existsSync(serverFilePath)) {
-//         console.log(`[Test Endpoint] Serving local file: ${serverFilePath}`);
-//         // Serve the file directly. Express will automatically handle Content-Type for known file types.
-//         res.sendFile(serverFilePath);
-//     } else {
-//         console.error(`[Test Endpoint] Test video file not found at: ${serverFilePath}`);
-//         res.status(404).json({
-//             message: `Test video file '${testVideoFilename}' not found on server. Please ensure it's in the 'public/videos' directory.`,
-//         });
-//     }
-// });
 
 module.exports = router;
